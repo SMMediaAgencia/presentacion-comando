@@ -12,6 +12,52 @@
 </head>
 <body>
 
+<!-- ═══ BOTÓN PRESENTAR ═══ -->
+<button id="btn-present" onclick="presentar()" title="Pantalla completa">
+  ▶ Presentar
+</button>
+
+<style>
+#btn-present {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 9999;
+  background: #111;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: background 0.2s;
+}
+#btn-present:hover { background: #333; }
+/* Se oculta en pantalla completa */
+:fullscreen #btn-present,
+:-webkit-full-screen #btn-present { display: none; }
+</style>
+
+<script>
+function presentar() {
+  const stage = document.querySelector('deck-stage');
+  /* Ocultar la barra lateral de thumbnails */
+  stage.setAttribute('no-rail', '');
+  /* Pedir pantalla completa */
+  const el = document.documentElement;
+  if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  /* Al salir de fullscreen, restaurar rail */
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      stage.removeAttribute('no-rail');
+    }
+  }, { once: false });
+}
+</script>
+
 <deck-stage>
 
 <!-- ═══════════════════════════ 01 · PORTADA ═══════════════════════════ -->
